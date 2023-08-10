@@ -1,7 +1,12 @@
 from rest_framework import serializers
-from .models import ServiceType
+from .models import ServiceType, Service
 
 class ServiceTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceType
-        fields = ['id', 'name', 'created_at', 'updated_at']
+        fields = "__all__"
+
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = "__all__"
