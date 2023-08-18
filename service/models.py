@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
 from base.models import Region, District, BaseModel
 from users.models import User
@@ -31,5 +31,14 @@ class Service(BaseModel):
     lat = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     long = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     
-    def str(self):
+    def __str__(self):
         return self.title
+    
+class Review(BaseModel):
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField(blank=True)
+    user = models.ForeignKey(User, related_name='review_users', on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, related_name="services", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.service

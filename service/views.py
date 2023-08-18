@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from .serializers import ServiceTypeSerializer, ServiceSerializer
-from .models import ServiceType, Service
+from .serializers import ServiceTypeSerializer, ServiceSerializer, ReviewSerializator
+from .models import ServiceType, Service, Review
 
 # Create your views here.
 
@@ -16,3 +16,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['region', 'district', 'price', 'people_count']
     search_fields = ['title']
+    
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializator
