@@ -6,8 +6,8 @@ from .models import ServiceType, Service
 
 # Create your views here.
 
-class ServiceTypeViewSet(viewsets.ModelViewSet):
-    queryset = ServiceType.objects.all()    
+class ServiceTypeReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ServiceType.objects.all()
     serializer_class = ServiceTypeSerializer
 
 class ServiceViewSet(viewsets.ModelViewSet):
