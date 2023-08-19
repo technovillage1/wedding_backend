@@ -1,10 +1,8 @@
 from rest_framework import viewsets
-from .serializers import ServiceTypeSerializer, ServiceSerializer, AttachmentSerializer
-from .models import ServiceType, Service, Attachment
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from .serializers import ServiceTypeSerializer, ServiceSerializer
-from .models import ServiceType, Service
+from .serializers import ServiceTypeSerializer, ServiceSerializer, AttachmentSerializer
+from .models import ServiceType, Service, Attachment
 
 # Create your views here.
 
@@ -22,4 +20,3 @@ class ServiceViewSet(viewsets.ModelViewSet):
 class AttachmentViewSet(viewsets.ModelViewSet):
     queryset = Attachment.objects.all()
     serializer_class = AttachmentSerializer
-

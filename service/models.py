@@ -42,4 +42,4 @@ class AttachmentChoice(models.TextChoices):
 class Attachment(BaseModel):
     attachment = models.FileField(upload_to='attachments/')
     attachment_type = models.CharField(choices=AttachmentChoice.choices, max_length=50, default=AttachmentChoice.IMAGE)
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='attachments')
