@@ -39,7 +39,7 @@ class ServiceSerializer(serializers.ModelSerializer):
         read_only_fields=('is_confirmed',)
         
     def create(self, validated_data):
-        attachments = validated_data.pop('attachments')
+        attachments = validated_data.pop('attachments', [])
         service = Service.objects.create(**validated_data)
         attachments_to_create = [Attachment(service=service, **data) for data in attachments]
         Attachment.objects.bulk_create(attachments_to_create)
