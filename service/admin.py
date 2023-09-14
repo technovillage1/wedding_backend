@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import ServiceType, Service
+from .models import ServiceType, Service, Attachment
 
 # Register your models here.
 
@@ -11,3 +11,7 @@ class RegionAdmin(ImportExportModelAdmin):
 @admin.register(Service)
 class ServiceAdmin(ImportExportModelAdmin):
     list_display = ("title",)
+
+@admin.register(Attachment)
+class AttachmentAdmin(ImportExportModelAdmin):
+    list_display = ("service",)
