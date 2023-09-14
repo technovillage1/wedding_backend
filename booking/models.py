@@ -27,8 +27,8 @@ def validate_future_date(value):
 
 
 class Booking(BaseModel):
-    service = models.ForeignKey("service.Service", related_name="books", on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey("users.User", related_name="books", on_delete=models.SET_NULL, null=True)
+    service = models.ForeignKey("service.Service", related_name="bookings", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey("users.User", related_name="bookings", on_delete=models.SET_NULL, null=True)
     booking_time = models.CharField(max_length=50, choices=BookingTimeChoices.choices)
     booking_date = models.DateField(validators=[validate_future_date])
     comment = models.TextField(blank=True)
