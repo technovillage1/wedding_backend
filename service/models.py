@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
 from base.models import Region, District, BaseModel
 from users.models import User
@@ -51,3 +51,12 @@ class Attachment(BaseModel):
     def __str__(self):
         return f"{self.service.title}"
 
+
+class Review(BaseModel):
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField(blank=True)
+    user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, related_name="reviews", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.full_name}'s review for {self.service.title}"
