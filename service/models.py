@@ -11,6 +11,10 @@ class ServiceType(BaseModel):
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name = "Service type"
+        verbose_name_plural = "Service types"
+
 
 class Service(BaseModel):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users')
@@ -33,6 +37,10 @@ class Service(BaseModel):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "Service"
+        verbose_name_plural = "Services"
+
 
 class AttachmentChoice(models.TextChoices):
     IMAGE = 'image', 'image'
@@ -51,6 +59,10 @@ class Attachment(BaseModel):
     def __str__(self):
         return f"{self.service.title}"
 
+    class Meta:
+        verbose_name = "Attachment"
+        verbose_name_plural = "Attachments"
+
 
 class Review(BaseModel):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
@@ -60,3 +72,7 @@ class Review(BaseModel):
 
     def __str__(self):
         return f"{self.user.full_name}'s review for {self.service.title}"
+
+    class Meta:
+        verbose_name = "Review"
+        verbose_name_plural = "Reviews"

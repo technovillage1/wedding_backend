@@ -11,7 +11,7 @@ class RegionAdmin(ImportExportModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(ImportExportModelAdmin):
-    list_display = ("title",)
+    list_display = ("title", 'created_at')
 
 
 @admin.register(Attachment)

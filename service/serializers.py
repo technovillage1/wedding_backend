@@ -20,7 +20,7 @@ class ReviewSerializer(ModelSerializer):
 
     def create(self, validated_data):
         validated_data['user'] = self.context.get('request').user
-
+        return super().create(validated_data)
 
 class AttachmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,7 +36,7 @@ class AttachmentSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    attachments = serializers.ListSerializer(child=AttachmentSerializer())
+    attachments = serializers.ListSerializer(child=AttachmentSerializer(), read_only=True)
     rating = serializers.FloatField(read_only=True)
 
     class Meta:
@@ -71,3 +71,4 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['owner'] = self.context.get('request').user
+        return super().create(validated_data)
