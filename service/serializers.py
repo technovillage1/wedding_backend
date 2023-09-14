@@ -1,19 +1,27 @@
 from rest_framework import serializers
 from .models import ServiceType, Service, Attachment
 
+
 class ServiceTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceType
         fields = "__all__"
 
+
 class AttachmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attachment
-        fields = ['id', 'attachment', 'attachment_type']
-        # read_only_fields = ('service',)
+        fields = "__all__"
+        extra_kwargs = {
+            'id': {"read_only": True}
+        }
+
+    def update(self, instance, validated_data):
+        validated_data.pop('service_id', None)
+        return super().update(instance, validated_data)
+
 
 class ServiceSerializer(serializers.ModelSerializer):
-    attachments = AttachmentSerializer(many=True, required=False)
     class Meta:
         model = Service
         fields = [
@@ -36,11 +44,13 @@ class ServiceSerializer(serializers.ModelSerializer):
             'long',
             'attachments',
         ]
-        read_only_fields=('is_confirmed',)
-        
-    def create(self, validated_data):
-        attachments = validated_data.pop('attachments', [])
-        service = Service.objects.create(**validated_data)
-        attachments_to_create = [Attachment(service=service, **data) for data in attachments]
-        Attachment.objects.bulk_create(attachments_to_create)
-        return service
+        extra_kwargs = {
+            'id': {"read_only": True},
+            'is_confirmed': {"read_only": True},
+            'attachments': {"read_only": True},
+
+        }
+
+    def update(self, instance, validated_data):
+        validated_data.pop('owner', None)
+        return super().update(instance, validated_data)
