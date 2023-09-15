@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'users',
     'service',
     'booking',
+    'sms_service',
 ]
 
 MIDDLEWARE = [
@@ -92,12 +93,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get("ENVIRONMENT") == "local":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get("POSTGRES_DB"),
+            'USER': os.environ.get("POSTGRES_USER"),
+            'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get("POSTGRES_PORT"),
+        }
+    }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -201,3 +214,14 @@ SWAGGER_SETTINGS = {
       }
    }
 }
+
+ESKIZ_LOGIN_URL = "https://notify.eskiz.uz/api/auth/login"
+ESKIZ_SEND_SMS_URL = "https://notify.eskiz.uz/api/message/sms/send"
+ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "foo@gmail.com")
+ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "password")
+
+OTP_MESSAGE = "Wedding.com saytiga kirish uchun tasdiqlash kodi:"
+OTP_LIFETIME = 60  # in seconds
+
+REDIS_URL = os.environ.get("REDIS_URL")
+
