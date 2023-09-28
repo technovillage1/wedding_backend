@@ -12,23 +12,28 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
-from dotenv import load_dotenv
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', "foo")
+SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', False)
-
-ALLOWED_HOSTS = []
+DEBUG = env.bool('DJANGO_DEBUG')
+print(env('ALLOWED_HOSTS'))
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -93,7 +98,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if os.environ.get("ENVIRONMENT") == "local":
+if env("ENVIRONMENT") == "local":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -102,14 +107,15 @@ if os.environ.get("ENVIRONMENT") == "local":
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get("POSTGRES_DB"),
-            'USER': os.environ.get("POSTGRES_USER"),
-            'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
-            'HOST': os.environ.get('POSTGRES_HOST'),
-            'PORT': os.environ.get("POSTGRES_PORT"),
-        }
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.postgresql',
+        #     'NAME': os.environ.get("POSTGRES_DB"),
+        #     'USER': os.environ.get("POSTGRES_USER"),
+        #     'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        #     'HOST': os.environ.get('POSTGRES_HOST'),
+        #     'PORT': os.environ.get("POSTGRES_PORT"),
+        # }
+        'default': env.db(),
     }
 
 REST_FRAMEWORK = {
@@ -217,12 +223,12 @@ SWAGGER_SETTINGS = {
 
 ESKIZ_LOGIN_URL = "https://notify.eskiz.uz/api/auth/login"
 ESKIZ_SEND_SMS_URL = "https://notify.eskiz.uz/api/message/sms/send"
-ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "foo@gmail.com")
-ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "password")
+ESKIZ_EMAIL = env.str("ESKIZ_EMAIL")
+ESKIZ_PASSWORD = env.str("ESKIZ_PASSWORD")
 
 OTP_MESSAGE = "Wedding.com saytiga kirish uchun tasdiqlash kodi:"
 OTP_LIFETIME = 60  # in seconds
 
-REDIS_URL = os.environ.get("REDIS_URL")
+REDIS_URL = env.str("REDIS_URL")
 
 APPEND_SLASH = False
