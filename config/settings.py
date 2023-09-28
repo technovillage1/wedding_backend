@@ -225,3 +225,4 @@ OTP_LIFETIME = 60  # in seconds
 
 REDIS_URL = os.environ.get("REDIS_URL")
 
+APPEND_SLASH = False

@@ -2,10 +2,16 @@ from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from users.models import User
 from users.permissions import UserPermission
 from users.serializers import RegisterUserSerializer, UserSerializer, PhoneConfirmationSerializer
+
+
+# class UserLoginView(TokenObtainPairView):
+#     # permission_classes = [ConfirmedUserPermission]
 
 
 class UserRegistrationView(generics.CreateAPIView):

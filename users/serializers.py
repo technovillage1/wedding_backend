@@ -1,9 +1,12 @@
+from typing import Dict, Any
+
 from django.contrib.auth.password_validation import validate_password
 from django.db.transaction import atomic
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from config.redis_client import redis_client
 from users.models import User
