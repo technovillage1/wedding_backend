@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Booking, BookingStatuses
+from .models import Booking, BookingStatuses, Schedule
 
 
 class BookingSerializer(ModelSerializer):
@@ -15,3 +15,8 @@ class BookingSerializer(ModelSerializer):
         validated_data['user'] = self.context.get('request').user
         validated_data['status'] = BookingStatuses.PENDING
         return super().create(validated_data)
+
+class ScheduleSerializer(ModelSerializer):
+    class Meta:
+        model = Schedule
+        fields = "__all__"

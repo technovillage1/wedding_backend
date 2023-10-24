@@ -5,6 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from rest_framework.exceptions import ValidationError
 
 from base.models import BaseModel
+from service.models import Service
 
 
 class BookingTimeChoices(TextChoices):
@@ -42,3 +43,15 @@ class Booking(BaseModel):
     class Meta:
         verbose_name = "Booking"
         verbose_name_plural = "Bookings"
+
+
+
+class Schedule(BaseModel):
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)
+    time = models.CharField(max_length=50, choices=BookingTimeChoices.choices)
+    date = models.DateField()
+    booking = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True)
+    is_booked = models.BooleanField(default=False, blank=True)
+    
+    def __str__(self):
+        return self.service.title
