@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party apps
+    'corsheaders',
     'drf_yasg2',
     'phonenumber_field',
     'rest_framework',
@@ -66,6 +67,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -246,3 +248,5 @@ OTP_LIFETIME = 60  # in seconds
 REDIS_URL = env.str("REDIS_URL")
 
 APPEND_SLASH = False
+
+CORS_ALLOW_ALL_ORIGINS = True
