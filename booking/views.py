@@ -2,7 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
+from rest_framework.generics import get_object_or_404
 
 from booking.models import Booking
 from booking.permissions import BookingOrServiceOwner
@@ -30,5 +30,5 @@ class ScheduleAPIView(APIView):
     
 class ScheduleDetailAPIView(APIView):
     def get(self, request, pk):
-        obj = get_object_or_404(Schedule, id=pk)
+        obj = get_object_or_404(Schedule, pk=pk)
         return Response(ScheduleSerializer(obj).data)
