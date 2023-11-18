@@ -16,7 +16,14 @@ class BookingSerializer(ModelSerializer):
         validated_data['status'] = BookingStatuses.PENDING
         return super().create(validated_data)
 
+
+class BookingCreateUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ('id', 'service', 'booking_time', 'booking_date', 'comment', 'customer_phone_number', 'suggested_price')
+
 class ScheduleSerializer(ModelSerializer):
     class Meta:
         model = Schedule
         fields = "__all__"
+
