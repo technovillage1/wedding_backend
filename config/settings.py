@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party apps
+    'corsheaders',
     'drf_yasg2',
     'phonenumber_field',
     'rest_framework',
@@ -66,6 +67,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -240,9 +242,11 @@ ESKIZ_SEND_SMS_URL = "https://notify.eskiz.uz/api/message/sms/send"
 ESKIZ_EMAIL = env.str("ESKIZ_EMAIL")
 ESKIZ_PASSWORD = env.str("ESKIZ_PASSWORD")
 
-OTP_MESSAGE = "Wedding.com saytiga kirish uchun tasdiqlash kodi:"
-OTP_LIFETIME = 60  # in seconds
+OTP_MESSAGE = "baxtlikun.uz saytiga kirish uchun tasdiqlash kodi:"
+OTP_LIFETIME = 120  # in seconds
 
 REDIS_URL = env.str("REDIS_URL")
 
 APPEND_SLASH = False
+
+CORS_ALLOW_ALL_ORIGINS = True
