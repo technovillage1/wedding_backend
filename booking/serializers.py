@@ -15,3 +15,8 @@ class BookingSerializer(ModelSerializer):
         validated_data['user'] = self.context.get('request').user
         validated_data['status'] = BookingStatuses.PENDING
         return super().create(validated_data)
+
+class BookingStatusSerializer(ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ('id', 'service', 'booking_time', 'booking_date', 'comment', 'customer_phone_number', 'suggested_price')
