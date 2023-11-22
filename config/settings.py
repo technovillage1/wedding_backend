@@ -243,7 +243,7 @@ ESKIZ_EMAIL = env.str("ESKIZ_EMAIL")
 ESKIZ_PASSWORD = env.str("ESKIZ_PASSWORD")
 
 OTP_MESSAGE = "baxtlikun.uz saytiga kirish uchun tasdiqlash kodi:"
-OTP_LIFETIME = 120  # in seconds
+OTP_LIFETIME = 60 * 60 * 24  # a day
 
 REDIS_URL = env.str("REDIS_URL")
 

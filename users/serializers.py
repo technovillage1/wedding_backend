@@ -1,12 +1,9 @@
-from typing import Dict, Any
-
 from django.contrib.auth.password_validation import validate_password
 from django.db.transaction import atomic
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from config.redis_client import redis_client
 from users.models import User
@@ -55,9 +52,7 @@ class PhoneConfirmationSerializer(serializers.Serializer):
             raise ValidationError("The phone number is already confirmed.")
         otp = redis_client.get(phone_number)
         if not otp or otp and str(otp.decode('utf-8')) != attrs['code']:
-            redis_client.delete(phone_number)
-            send_otp(phone_number)
-            raise ValidationError("Confirmation code did not match.\nSent again.")
+            raise ValidationError("Confirmation code did not match.")
         attrs["user"] = user
         return attrs
 
@@ -66,6 +61,23 @@ class PhoneConfirmationSerializer(serializers.Serializer):
         user.is_phone_confirmed = True
         user.save(update_fields=["is_phone_confirmed"])
         return user
+
+
+class ResendConfirmationSerializer(serializers.Serializer):
+    phone_number = PhoneNumberField(required=True)
+
+    def validate(self, attrs):
+        phone_number = str(attrs['phone_number'])
+        user = get_object_or_404(User, phone_number=phone_number)
+        if user.is_phone_confirmed:
+            raise ValidationError("The phone number is already confirmed.")
+        redis_client.delete(phone_number)
+        send_otp(phone_number)
+        attrs["user"] = user
+        return attrs
+
+    def create(self, validated_data):
+        return validated_data
 
 
 class UserSerializer(serializers.ModelSerializer):
