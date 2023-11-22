@@ -242,8 +242,8 @@ ESKIZ_SEND_SMS_URL = "https://notify.eskiz.uz/api/message/sms/send"
 ESKIZ_EMAIL = env.str("ESKIZ_EMAIL")
 ESKIZ_PASSWORD = env.str("ESKIZ_PASSWORD")
 
-OTP_MESSAGE = "Wedding.com saytiga kirish uchun tasdiqlash kodi:"
-OTP_LIFETIME = 60  # in seconds
+OTP_MESSAGE = "baxtlikun.uz saytiga kirish uchun tasdiqlash kodi:"
+OTP_LIFETIME = 60 * 60 * 24  # a day
 
 REDIS_URL = env.str("REDIS_URL")
 
