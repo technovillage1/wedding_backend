@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenBlacklistView, TokenObtainPairView, TokenRefreshView
 
-from .views import UserRegistrationView, UserViewSet, UserConfirmationView
+from .views import UserRegistrationView, UserViewSet, UserConfirmationView, UserResendConfirmationView
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'users', UserViewSet, basename='user')
@@ -13,4 +13,5 @@ urlpatterns = [
                   path('users/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
                   path('users/logout/', TokenBlacklistView.as_view(), name='token_blacklist'),
                   path('users/confirm/', UserConfirmationView.as_view(), name="user_confirm"),
+                  path('users/confirm/resend/', UserResendConfirmationView.as_view(), name="resend_confirm"),
               ] + router.urls
