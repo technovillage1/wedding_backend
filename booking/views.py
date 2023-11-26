@@ -50,11 +50,12 @@ class BookingCancelledView(GenericAPIView):
         return Response(BookingSerializer(obj).data)
 
 class ScheduleAPIView(GenericAPIView):
+    serializer_class = ScheduleSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_booked', 'service']
     def get(self, request):
         obj = Schedule.objects.all()
-        serializer = ScheduleSerializer(obj, many=True)
+        serializer = self.get_serializer_class(obj, many=True)
         return Response(serializer.data)
     
     
