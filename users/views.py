@@ -44,7 +44,7 @@ class UserResendConfirmationView(generics.CreateAPIView):
 
 class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
     queryset = User.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, UserPermission]
     http_method_names = ['get', 'patch', 'delete']
     serializer_class = UserSerializer
 
