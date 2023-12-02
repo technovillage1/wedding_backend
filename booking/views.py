@@ -1,8 +1,8 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from booking.models import Booking, BookingStatuses
 from booking.permissions import BookingOrServiceOwner
@@ -32,7 +32,8 @@ class BookingAcceptedView(GenericAPIView):
         obj.save()
 
         return Response(BookingSerializer(obj).data)
-        
+
+
 class BookingRejectedView(GenericAPIView):
     def patch(self, request, pk):
         obj = get_object_or_404(Booking, pk=pk)
@@ -40,6 +41,7 @@ class BookingRejectedView(GenericAPIView):
         obj.save()
 
         return Response(BookingSerializer(obj).data)
+
 
 class BookingCancelledView(GenericAPIView):
     def patch(self, request, pk):
@@ -49,14 +51,17 @@ class BookingCancelledView(GenericAPIView):
 
         return Response(BookingSerializer(obj).data)
 
+
 class ScheduleAPIView(ListAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_booked', 'service']
-    
+
+
 class ScheduleDetailAPIView(GenericAPIView):
     serializer_class = ScheduleSerializer
+
     def get(self, request, pk):
         obj = get_object_or_404(Schedule, pk=pk)
         return Response(ScheduleSerializer(obj).data)

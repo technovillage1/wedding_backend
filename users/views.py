@@ -1,7 +1,8 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, mixins
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -41,8 +42,12 @@ class UserResendConfirmationView(generics.CreateAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class UserViewSet(ModelViewSet):
+class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
     queryset = User.objects.all()
-    permission_classes = [IsAuthenticated, UserPermission]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'patch', 'delete']
     serializer_class = UserSerializer
+
+    @action(methods=["GET"], detail=False, url_path="me", url_name="users_me")
+    def me(self, request, *args, **kwargs):
+        return Response(self.serializer_class(request.user).data)
