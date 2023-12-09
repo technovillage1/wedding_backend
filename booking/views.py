@@ -9,7 +9,7 @@ from booking.permissions import BookingOrServiceOwner
 from booking.serializers import BookingSerializer, BookingCreateUpdateSerializer
 from .models import Schedule
 from .serializers import ScheduleSerializer
-
+from .filters import ScheduleFilter
 
 class BookingViewSet(ModelViewSet):
     queryset = Booking.objects.all()
@@ -56,7 +56,7 @@ class ScheduleAPIView(ListAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['is_booked', 'service']
+    filterset_class = ScheduleFilter
 
 
 class ScheduleDetailAPIView(GenericAPIView):
