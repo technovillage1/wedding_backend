@@ -1,4 +1,5 @@
 from rest_framework.permissions import BasePermission
+from service.models import Service
 
 
 class BookingOrServiceOwner(BasePermission):
@@ -20,3 +21,9 @@ class IsBookingOwner(BasePermission):
         return bool(request.user and
                     request.user.is_authenticated and
                     request.user == obj.user)
+
+class IsServiseOwner(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return bool(request.user and
+                    request.user.is_authenticated and
+                    request.user == obj.service.owner)

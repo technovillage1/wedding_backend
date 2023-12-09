@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from booking.models import Booking, BookingStatuses
-from booking.permissions import BookingOrServiceOwner
+from booking.permissions import BookingOrServiceOwner, IsServiseOwner, IsBookingOwner
 from booking.serializers import BookingSerializer, BookingCreateUpdateSerializer
 from .models import Schedule
 from .serializers import ScheduleSerializer
@@ -27,8 +27,10 @@ class BookingViewSet(ModelViewSet):
 
 class BookingAcceptedView(GenericAPIView):
     serializer_class = BookingSerializer
+    permission_classes = (IsServiseOwner,)
     def patch(self, request, pk):
         obj = get_object_or_404(Booking, pk=pk)
+        self.check_object_permissions(request, obj)
         obj.status = BookingStatuses.ACCEPTED
         obj.save()
 
@@ -37,8 +39,10 @@ class BookingAcceptedView(GenericAPIView):
 
 class BookingRejectedView(GenericAPIView):
     serializer_class = BookingSerializer
+    permission_classes = (IsBookingOwner,)
     def patch(self, request, pk):
         obj = get_object_or_404(Booking, pk=pk)
+        self.check_object_permissions(request, obj)
         obj.status = BookingStatuses.REJECTED
         obj.save()
 
@@ -47,8 +51,10 @@ class BookingRejectedView(GenericAPIView):
 
 class BookingCancelledView(GenericAPIView):
     serializer_class = BookingSerializer
+    permission_classes = (IsServiseOwner,)
     def patch(self, request, pk):
         obj = get_object_or_404(Booking, pk=pk)
+        self.check_object_permissions(request, obj)
         obj.status = BookingStatuses.CANCELLED
         obj.save()
 
