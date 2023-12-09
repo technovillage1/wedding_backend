@@ -26,6 +26,7 @@ class BookingViewSet(ModelViewSet):
 
 
 class BookingAcceptedView(GenericAPIView):
+    serializer_class = BookingSerializer
     def patch(self, request, pk):
         obj = get_object_or_404(Booking, pk=pk)
         obj.status = BookingStatuses.ACCEPTED
@@ -35,6 +36,7 @@ class BookingAcceptedView(GenericAPIView):
 
 
 class BookingRejectedView(GenericAPIView):
+    serializer_class = BookingSerializer
     def patch(self, request, pk):
         obj = get_object_or_404(Booking, pk=pk)
         obj.status = BookingStatuses.REJECTED
@@ -44,6 +46,7 @@ class BookingRejectedView(GenericAPIView):
 
 
 class BookingCancelledView(GenericAPIView):
+    serializer_class = BookingSerializer
     def patch(self, request, pk):
         obj = get_object_or_404(Booking, pk=pk)
         obj.status = BookingStatuses.CANCELLED
